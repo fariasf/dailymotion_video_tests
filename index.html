@@ -99,6 +99,11 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 				window.rd_dm_players[player_id].play();
 				already_played.push(player_id);
 			}, 100 );
+			setTimeout( function(){
+				console.log('Play 2 just in case:', player_id);
+				window.rd_dm_players[player_id].play();
+				already_played.push(player_id);
+			}, 200 );
 		}
 
 		function initialize_dm_players() {
