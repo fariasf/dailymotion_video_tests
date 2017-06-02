@@ -139,6 +139,7 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 
 				window.rd_dm_players[player_id].addEventListener('apiready', function(){
 					console.log('DM API - Ready:', player_id);
+					window.rd_dm_players[player_id].seek(0);
 					api_ready.push(player_id);
 				});
 			});
