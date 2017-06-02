@@ -18,6 +18,11 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 </script>
 <script>
 	(function($) {
+		var oldLog = console.log;
+		console.log = function (message) {
+			$("#status ul").append('<li>' + Array.prototype.slice.call(arguments).join(' ') + '</li>');
+			oldLog.apply(console, arguments);
+		};
 		window.rd_dm_videos = window.rd_dm_videos || [
 			{
 				player_id: 'dmpl59314ea08465a',
@@ -130,6 +135,7 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 		}
 	})(jQuery);
 </script>
+<div id="status" style="position: fixed; top: 0; left: 0; right: 0; height: 3em; background: rgba(255,200,200,.9); font-weight: bold; padding: 3px; overflow-y: scroll"><ul></ul></div>
 <div>
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut excepturi provident vero, ab in sunt. Dolor minus porro rerum earum, ullam error nihil facere voluptatum, consectetur eaque accusantium beatae obcaecati.</p>
 	<p>Nam nemo corporis voluptatem dolore voluptas ipsa sequi provident, recusandae, voluptates eveniet deleniti nisi quae dolor consequatur ea laudantium repellat, odio quos ducimus voluptatibus quia. Deserunt officia quae blanditiis qui!</p>
