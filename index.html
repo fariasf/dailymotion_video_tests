@@ -116,7 +116,8 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 				});
 
 				window.rd_dm_players[player_id].addEventListener('waiting', function(event) {
-					console.log('event '+event.type+' received on '+event.target+'!');
+					console.log('Waiting:', player_id);
+					play_video( player_id );
 				});
 
 				window.rd_dm_players[player_id].addEventListener('apiready', function(){
