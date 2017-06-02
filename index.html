@@ -103,7 +103,7 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 				console.log('Play 2 just in case:', player_id);
 				window.rd_dm_players[player_id].play();
 				already_played.push(player_id);
-			}, 200 );
+			}, 300 );
 		}
 
 		function initialize_dm_players() {
@@ -121,12 +121,23 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 				});
 
 				window.rd_dm_players[player_id].addEventListener('waiting', function(event) {
-					console.log('Waiting:', player_id);
-					play_video( player_id );
+					console.log('DM API - Waiting:', player_id);
+				});
+
+				window.rd_dm_players[player_id].addEventListener('play', function(event) {
+					console.log('DM API - Play called:', player_id);
+				});
+
+				window.rd_dm_players[player_id].addEventListener('playing', function(event) {
+					console.log('DM API - Playing:', player_id);
+				});
+
+				window.rd_dm_players[player_id].addEventListener('progress', function(event) {
+					console.log('DM API - Progress:', player_id);
 				});
 
 				window.rd_dm_players[player_id].addEventListener('apiready', function(){
-					console.log('API ready - AEL:', player_id);
+					console.log('DM API - Ready:', player_id);
 					api_ready.push(player_id);
 				});
 			});
