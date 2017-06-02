@@ -1,1 +1,121 @@
-Test
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teting DailyMotion Videos</title>
+<style type="text/css">body{margin:40px
+auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
+10px}h1,h2,h3{line-height:1.2}</style>
+
+<h1>Teting DailyMotion Videos</h1>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://rawgit.com/zuk/jquery.inview/master/jquery.inview.min.js"></script>
+<script src="https://api.dmcdn.net/all.js"></script>
+<script>
+	(function($) {
+		window.rd_dm_videos = window.rd_dm_videos || [
+			{
+				player_id: 'dmpl59314ea08465a',
+				video_id: 'x5e9eog',
+			},
+			{
+				player_id: 'dmpl593152dee0175',
+				video_id: 'x5a9aiz',
+			}
+		];
+		window.rd_dm_players = [];
+		var already_played = [];
+		var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+
+
+		// Default settings
+		var settings = {
+			mute: true,
+			autoplay_when_in_view: true,
+			responsive: true
+		};
+
+
+		// iOS: click to play with sound
+		if ( iOS ) {
+			settings.autoplay_when_in_view = false;
+			settings.volume = 1;
+			settings.mute = false;
+		}
+
+
+		$(function() {
+			initialize_dm_players();
+			adjust_player_sizes();
+
+			if ( settings.autoplay_when_in_view ) {
+				$('.dmplayer').on('inview', function(event, isInView, topOrBottomOrBoth) {
+					if( isInView && topOrBottomOrBoth == 'both' ) {
+						var player_id = $(this).attr('id');
+
+						// Don't autoplay twice.
+						if( already_played.indexOf(player_id) !== -1 ) return;
+
+						setTimeout( function(){
+							window.rd_dm_players[player_id].play();
+							already_played.push(player_id);
+						}, 100 )
+					}
+				});
+			}
+
+			if ( settings.responsive ) {
+				$( window ).on( 'resize', adjust_player_sizes );
+			}
+		});
+
+
+		function initialize_dm_players() {
+			window.rd_dm_videos.forEach(function(rd_video) {
+				var player_id = rd_video.player_id;
+				var video_id = rd_video.video_id;
+
+				window.rd_dm_players[player_id] = DM.player(document.getElementById(player_id), {
+					video: video_id,
+					width: "100%",
+					params: {
+						volume: settings.volume,
+						mute: settings.mute
+					}
+				});
+			});
+		}
+
+		function adjust_player_sizes() {
+			window.rd_dm_videos.forEach(function(rd_video) {
+				ASPECT_RATIO = 9 / 16;
+
+				$("#" + rd_video.player_id).height( $("#" + rd_video.player_id).width() * ASPECT_RATIO )
+			});
+		}
+	})(jQuery);
+</script>
+<div>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut excepturi provident vero, ab in sunt. Dolor minus porro rerum earum, ullam error nihil facere voluptatum, consectetur eaque accusantium beatae obcaecati.</p>
+	<p>Nam nemo corporis voluptatem dolore voluptas ipsa sequi provident, recusandae, voluptates eveniet deleniti nisi quae dolor consequatur ea laudantium repellat, odio quos ducimus voluptatibus quia. Deserunt officia quae blanditiis qui!</p>
+	<p>Labore possimus quidem est unde explicabo aliquid voluptatibus architecto adipisci. Fugiat esse nostrum temporibus tempora assumenda, cumque rem, tempore at inventore praesentium debitis ratione suscipit ullam consequatur similique autem totam!</p>
+	<p>Necessitatibus quisquam dolor, obcaecati qui vero libero, facere veniam amet dolore enim quasi aperiam excepturi, sint culpa! Quaerat iusto modi, officiis voluptatibus blanditiis aut odit, quos quia ea ut, tenetur.</p>
+	<p>Cumque, atque. Ea suscipit, reprehenderit, iusto sit quo nulla eum, alias pariatur nemo ipsam ratione aspernatur sapiente porro. Voluptatum odio a consequatur vero labore nulla architecto ad quod, perspiciatis veniam?</p>
+	<p>Maiores voluptates nemo sit libero ad, amet et aspernatur eaque cum placeat, odio sint eum quos aperiam vitae. Animi odio debitis soluta harum ipsa adipisci consequuntur iste culpa molestiae et.</p>
+	<p>Sit nemo asperiores autem vero et tenetur vel ab? Nisi dolorum esse atque veniam odit iste unde eaque, qui obcaecati iusto eligendi excepturi perferendis assumenda magnam, perspiciatis magni. Aperiam, aliquid?</p>
+	<p>Voluptas officiis similique sed, dolor alias, autem ullam. Reiciendis obcaecati est voluptatibus, cum eum totam, quisquam facere itaque similique porro accusantium, quas deleniti natus provident dolorum beatae architecto rerum maiores!</p>
+	<div class="dmplayer" id="dmpl59314ea08465a"></div>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam tenetur, velit architecto! Quod voluptatibus asperiores nobis eius, reiciendis alias ab labore, soluta ex quaerat atque qui quas officiis nam incidunt.</p>
+	<p>Itaque ab dolorum dicta aliquam obcaecati ducimus molestiae et corporis architecto ipsam aspernatur tempore officia rerum ipsum saepe culpa commodi doloremque harum voluptatem unde, ipsa voluptates provident possimus labore. Temporibus!</p>
+	<p>Rerum aliquam similique fuga quisquam nam enim eligendi reprehenderit quibusdam, quasi accusantium id perspiciatis mollitia, debitis labore? Odit officia assumenda, dolore, ab natus necessitatibus excepturi debitis, ratione voluptatem ad placeat.</p>
+	<p>Odio laborum, magnam ex deleniti cum esse nam saepe rem. Ex aliquid error sapiente fugit unde eos numquam placeat nobis rerum sunt, dolore eligendi illum id velit porro impedit repellat!</p>
+	<p>Facilis laudantium perspiciatis fugit deleniti atque, amet? Sed officiis nulla non sunt tempora excepturi laborum repellat ut, harum voluptate. Error sunt saepe, inventore mollitia et modi quisquam velit voluptate recusandae.</p>
+	<p>Architecto deleniti perspiciatis, totam eius, eos necessitatibus saepe alias laboriosam sequi quia illum, similique, placeat quas inventore laudantium in. Voluptatibus, harum? Ducimus placeat blanditiis nam omnis, iste, sapiente neque voluptas.</p>
+	<p>Dignissimos aliquam provident vel iusto perspiciatis nisi beatae quibusdam, placeat deleniti facere alias possimus accusamus fugiat quasi molestias, labore nostrum, aspernatur commodi? Earum itaque reiciendis totam reprehenderit odio suscipit ipsum?</p>
+	<p>Tenetur laborum ipsum optio itaque perferendis rerum dolorum nam doloremque illum officiis totam ipsa animi similique, vel! Expedita eos recusandae sapiente quisquam qui alias ea, mollitia vitae, inventore et obcaecati.</p>
+	<div class="dmplayer" id="dmpl593152dee0175"></div>
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam eum unde accusamus magni, impedit deserunt quae iste et quas omnis dolores placeat nostrum voluptatem veritatis quod eaque nobis alias! Ipsum.</p>
+	<p>Officia libero iusto reprehenderit ad accusamus ex consectetur, eaque, dolorem sunt necessitatibus laboriosam incidunt nihil porro velit impedit quam nulla maiores debitis iste dicta quaerat iure blanditiis eum dolor! Magnam.</p>
+	<p>Aspernatur deserunt optio suscipit soluta voluptate rem, commodi, a voluptas facilis libero saepe quasi quo et repellendus laborum magni explicabo nulla tempore perspiciatis fugiat omnis neque vitae ea facere nobis!</p>
+	<p>Debitis libero, sint, iure officiis voluptatum similique id minus. Optio hic saepe maxime assumenda nemo, repellat cum ducimus, illum aspernatur corporis, adipisci ipsa quod perferendis ex architecto sit cumque, facilis.</p>
+	<p>Animi veritatis rerum atque magnam suscipit quaerat earum corporis possimus maiores nulla ipsum, perspiciatis error eius labore dolorem similique voluptatibus, reprehenderit praesentium, omnis ducimus tempore! Nobis quia repudiandae illum earum.</p>
+</div>
