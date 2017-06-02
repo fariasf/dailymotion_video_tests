@@ -10,6 +10,13 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 <script src="https://rawgit.com/zuk/jquery.inview/master/jquery.inview.min.js"></script>
 <script src="https://api.dmcdn.net/all.js"></script>
 <script>
+	DM.init({
+		apiKey: 'YOUR API KEY',
+		status: true, // check login status
+		cookie: true // enable cookies to allow the server to access the session
+	});
+</script>
+<script>
 	(function($) {
 		window.rd_dm_videos = window.rd_dm_videos || [
 			{
@@ -23,6 +30,7 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 		];
 		window.rd_dm_players = [];
 		var already_played = [];
+		var api_ready = [];
 		var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
 
@@ -51,14 +59,26 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 				$('.dmplayer').on('inview', function(event, isInView, topOrBottomOrBoth) {
 					if( isInView && topOrBottomOrBoth == 'both' ) {
 						var player_id = $(this).attr('id');
+						console.log('In view:', player_id);
 
 						// Don't autoplay twice.
-						if( already_played.indexOf(player_id) !== -1 ) return;
+						console.log('In view:', player_id);
+						if( already_played.indexOf(player_id) !== -1 ) {
+							console.log('Already played:', player_id);
+							return;
+						}
 
-						setTimeout( function(){
-							window.rd_dm_players[player_id].play();
-							already_played.push(player_id);
-						}, 100 )
+						if( api_ready.indexOf(player_id) == -1 ) {
+							console.log('API not ready:', player_id);
+							window.rd_dm_players[player_id].addEventListener('apiready', function(){
+								console.log('API ready - AEL:', player_id);
+								api_ready.push(player_id);
+								play_video( player_id );
+							});
+						} else {
+							console.log('API ready:', player_id);
+							play_video( player_id );
+						}
 					}
 				});
 			}
@@ -68,6 +88,13 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 			}
 		});
 
+		function play_video( player_id ) {
+			setTimeout( function(){
+				console.log('Play:', player_id);
+				window.rd_dm_players[player_id].play();
+				already_played.push(player_id);
+			}, 100 );
+		}
 
 		function initialize_dm_players() {
 			window.rd_dm_videos.forEach(function(rd_video) {
@@ -81,6 +108,15 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 						volume: settings.volume,
 						mute: settings.mute
 					}
+				});
+
+				window.rd_dm_players[player_id].addEventListener('waiting', function(event) {
+					console.log('event '+event.type+' received on '+event.target+'!');
+				});
+
+				window.rd_dm_players[player_id].addEventListener('apiready', function(){
+					console.log('API ready - AEL:', player_id);
+					api_ready.push(player_id);
 				});
 			});
 		}
